@@ -61,6 +61,7 @@
             background-color: var(--bg-color);
             color: #ffffff;
             overflow-x: hidden;
+            position: relative;
         }
 
         /* Glassmorphism Panels */
@@ -72,13 +73,30 @@
             border-left: 1px solid rgba(74, 222, 128, 0.2);
         }
 
-        /* Clovers Background */
+        /* Hero background image */
+        #hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('background.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.35;
+            z-index: 0;
+        }
+        #hero-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(4,17,8,0.4) 0%, rgba(4,17,8,0.85) 80%, var(--bg-color) 100%);
+        }
+
+        /* Clovers Background - scrolls with page, starts below the hero section */
         #clovers-container {
-            position: fixed;
-            top: 0;
+            position: absolute;
+            top: 100vh;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: calc(100% - 100vh);
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
@@ -88,6 +106,7 @@
             position: absolute;
             color: rgba(74, 222, 128, 0.1);
             animation: fall linear infinite;
+            will-change: transform, opacity;
         }
 
         @keyframes fall {
@@ -121,7 +140,7 @@
 </head>
 <body class="antialiased">
 
-    <!-- Animowane tło -->
+    <!-- Animowane tło (koniczynki) - position: fixed, widoczne na całej stronie -->
     <div id="clovers-container"></div>
 
     <!-- Nawigacja (Sticky) -->
@@ -152,6 +171,9 @@
     <main>
         <!-- Hero Section (Wypełnia cały ekran do momentu scrollowania) -->
         <section class="relative min-h-screen flex flex-col justify-center overflow-hidden pt-20">
+            <!-- Tło hero z background.png -->
+            <div id="hero-bg"></div>
+
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center w-full">
                 
                 <!-- Główne logo i napis z animacją RGB -->
@@ -215,8 +237,8 @@
         </section>
 
         <!-- Our Games Section -->
-        <section id="games" class="py-24 relative z-10 bg-[#020804]">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section id="games" class="py-24 relative z-10 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 <div class="text-center mb-16">
                     <h2 class="text-4xl md:text-5xl font-black mb-4">Our <span class="text-lucky-400">Games</span></h2>
                     <div class="h-1 w-24 bg-gradient-to-r from-lucky-400 to-lucky-600 mx-auto rounded-full"></div>
@@ -354,12 +376,11 @@
     </footer>
 
     <script>
-        // Animacja tła (Koniczynki)
+        // Animacja tła (Koniczynki) - generowane raz, fixed position = widoczne na całej stronie podczas scrollowania
         function createClovers() {
             const container = document.getElementById('clovers-container');
-            const icons = ['\uf06c']; // Fa-leaf jako placeholder koniczyny
             
-            for(let i=0; i<15; i++) {
+            for(let i=0; i<25; i++) {
                 let clover = document.createElement('i');
                 clover.className = `fas fa-leaf clover text-${Math.floor(Math.random() * 3 + 1)}xl`;
                 
