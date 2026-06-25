@@ -388,7 +388,9 @@
                 
                 let duration = Math.random() * 10 + 10;
                 clover.style.animationDuration = `${duration}s`;
-                clover.style.animationDelay = `${Math.random() * 10}s`;
+                // Negatywny delay = animacja startuje "w trakcie" swojego cyklu,
+                // zamiast czekać i zamrażać liść na starcie (to było źródło tego glitcha)
+                clover.style.animationDelay = `-${Math.random() * duration}s`;
                 
                 container.appendChild(clover);
             }
